@@ -6,7 +6,7 @@ public class Runner : MonoBehaviour
 {
     [Range(-1,1)]
     public int faceDirection=1;
-    public float moveSpeed;
+    public float moveSpeed=5;
     bool tagged;
 
     
@@ -18,6 +18,9 @@ public class Runner : MonoBehaviour
     void Start()
     {
         ChaserRef = GameObject.FindGameObjectWithTag("Chaser").transform;
+        // randomized speed multipler
+        float r = Random.Range(-1f, 1f);
+        moveSpeed += r;
     }
 
     // Update is called once per frame
@@ -46,12 +49,14 @@ public class Runner : MonoBehaviour
         faceDirection *= -1;
     }
 
-    private void OnCollisionEnter(Collision collision)
+
+    public bool IsTagged()
     {
-        if (collision.collider.gameObject.tag == "Chaser")
-        {
-            Debug.Log("Collided");
-            collision.collider.GetComponent<Rigidbody>().AddForce(50 * Vector3.forward, ForceMode.Impulse);
-        }
+        return tagged;
+    }
+
+    public void SetTagged()
+    {
+        tagged=true;
     }
 }

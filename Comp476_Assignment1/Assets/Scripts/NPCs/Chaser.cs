@@ -7,7 +7,8 @@ public class Chaser : MonoBehaviour
     [Range(-1, 1)]
     public int faceDirection = 1;
     public float moveSpeed;
-    
+
+    float Timer;            // every set timer, check for closer targets.
 
 
     //chaser reference
@@ -32,20 +33,25 @@ public class Chaser : MonoBehaviour
 
     void FindNewTarget()
     {
-        Collider []temp=Physics.OverlapSphere(transform.position,5f);
+        Collider []temp=Physics.OverlapSphere(transform.position,15f);
         // find closest
         float shortestDistance = 100;
         Collider shortestTarget=null;
         foreach (Collider c in temp)
         {
-            if (Vector3.Distance(transform.position, c.transform.position) < shortestDistance)
+            if (Vector3.Distance(transform.position, c.transform.position) < shortestDistance && c.transform.tag == "Runner")
             {
-                shortestDistance = Vector3.Distance(transform.position, c.transform.position);
-                shortestTarget = c;
+                //Debug.Log("Potential Target: "+c.transform.name);
+                if (!c.gameObject.GetComponent<Runner>().IsTagged())
+                {
+                    shortestDistance = Vector3.Distance(transform.position, c.transform.position);
+                    shortestTarget = c;
+                }
             }
         }
         // we know shortest target now, seek that target
-        TargetRef = shortestTarget.transform;
+        if(shortestTarget!=null)
+            TargetRef = shortestTarget.transform;
     }
 
     void Seek()
@@ -56,5 +62,26 @@ public class Chaser : MonoBehaviour
 
         // keep moving at max speed
         transform.Translate(dir * moveSpeed * Time.deltaTime);
+
+
+        Timer += Time.deltaTime;
+        if (Timer > 4f)
+        {
+            TargetRef = null;
+            Timer = 0f;
+        }
     }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.gameObject.tag == "Runner")
+        {
+            Debug.Log("Collided");
+            collision.collider.GetComponent<Rigidbody>().AddForce(50 * Vector3.up, ForceMode.Impulse);
+            collision.collider.GetComponent<Runner>().SetTagged();
+            TargetRef = null;
+        }
+    }
+
 }
