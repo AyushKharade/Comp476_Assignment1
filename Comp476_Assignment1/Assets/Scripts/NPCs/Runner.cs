@@ -17,7 +17,7 @@ public class Runner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ChaserRef = GameObject.FindGameObjectWithTag("Chaser").transform;
+        //ChaserRef = GameObject.FindGameObjectWithTag("Chaser").transform;
         // randomized speed multipler
         float r = Random.Range(-1f, 1f);
         moveSpeed += r;
@@ -26,9 +26,9 @@ public class Runner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!tagged)
-            Flee();
-        //transform.Translate(new Vector3(faceDirection*moveSpeed * Time.deltaTime, 0, 0));
+        //if(!tagged)
+         //   Flee();
+        transform.Translate(transform.forward*moveSpeed * Time.deltaTime);
     }
 
 

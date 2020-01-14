@@ -4,11 +4,26 @@ using UnityEngine;
 
 public class WrapAround : MonoBehaviour
 {
-    public Transform TeleportTo;
-   
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
-        other.transform.position = TeleportTo.position;
-        // also turn them 180 degrees
+        // multiple x and z values by -1: so it wraps around on opposite side
+        if (other.collider.tag == "Chaser" || other.collider.tag == "Runner")
+        {
+            Debug.Log("Collided with PC");
+            Vector3 pos = other.transform.position;
+            pos.x *= -1;
+            if (pos.x < 0)
+                pos.x += 0.4f;
+            else
+                pos.x -= 0.8f;
+
+            pos.z *= -1;
+            if (pos.z < 0)
+                pos.z += 0.4f;
+            else
+                pos.z -= 1f;
+
+            other.transform.position = pos;
+        }
     }
 }

@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Misc\WrapAround.cs" />
     <Compile Include="Assets\Scripts\NPCs\Chaser.cs" />
+    <Compile Include="Assets\Scripts\NPCs\PlayerForTesting.cs" />
     <Compile Include="Assets\Scripts\NPCs\Runner.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/ASUS/Documents/School/Fall-Winter 2019-20/Winter 2020/Comp476/Assignments/A1/A1 Unity/Comp476_Assignment1/Comp476_Assignment1/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
