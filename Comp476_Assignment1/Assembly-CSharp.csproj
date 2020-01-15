@@ -62,8 +62,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Misc\Game.cs" />
     <Compile Include="Assets\Scripts\Misc\WrapAround.cs" />
     <Compile Include="Assets\Scripts\NPCs\Chaser.cs" />
+    <Compile Include="Assets\Scripts\NPCs\NPC.cs" />
     <Compile Include="Assets\Scripts\NPCs\PlayerForTesting.cs" />
     <Compile Include="Assets\Scripts\NPCs\Runner.cs" />
     <Reference Include="Unity.Timeline.Editor">

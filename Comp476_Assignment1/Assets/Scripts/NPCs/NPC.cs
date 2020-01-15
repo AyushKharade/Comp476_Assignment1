@@ -13,6 +13,10 @@ public class NPC : MonoBehaviour
      * 
      
      */
+    public Material Red_mat;
+    public Material Green_mat;
+    public Material Frozen_mat;
+
 
     [Header("State")]
     public bool tagged;
@@ -45,7 +49,7 @@ public class NPC : MonoBehaviour
             if (Kinematic_Seek)
                 Kinematic_SeekBehavior();
         }
-        else if(type+"" == "Fleeing" && !frozen)
+        else if(type+"" == "Fleeing" && !frozen && Target!=null)
         {
             //running behaviors
             // flee from target
@@ -56,6 +60,10 @@ public class NPC : MonoBehaviour
 
         if (Target == null)
             FindNewTarget();
+
+
+        // to eliminate any forces acting on objects
+        //GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
 
 
@@ -88,6 +96,21 @@ public class NPC : MonoBehaviour
     public void SetFrozen()
     {
         frozen = true;
+        GetComponent<Renderer>().material = Frozen_mat;
+    }
+
+    public void SetChaser()
+    {
+        tagged = true;
+        type = npcType.Chasing;
+        GetComponent<Renderer>().material = Red_mat;
+        Debug.Log("Chaser set: "+transform.name);
+    }
+
+    public void ResetStates()
+    {
+        frozen = false;
+        tagged = false;
     }
 
 
@@ -115,6 +138,26 @@ public class NPC : MonoBehaviour
             Target = shortestTarget.transform;
     }
 
+
+
+    //set target for fleeing npcs
+    public void SetFleeFromTarget(Transform target)
+    {
+        Target = target;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     // collision
     private void OnCollisionEnter(Collision collision)
     {
@@ -122,7 +165,7 @@ public class NPC : MonoBehaviour
         {
             if (collision.collider.tag == "NPC")
             {
-                collision.collider.GetComponent<Rigidbody>().AddForce(50*Vector3.up,ForceMode.Impulse);
+                //collision.collider.GetComponent<Rigidbody>().AddForce(50*Vector3.up,ForceMode.Impulse);
                 collision.collider.GetComponent<NPC>().SetFrozen();
                 Target = null;
             }

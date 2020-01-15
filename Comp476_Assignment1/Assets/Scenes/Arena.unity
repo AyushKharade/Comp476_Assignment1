@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 58848522}
   - component: {fileID: 58848521}
   m_Layer: 0
-  m_Name: NPC1 (4)
+  m_Name: NPC6
   m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -168,13 +168,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502375f4dd40461418c6fe202165959f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Red_mat: {fileID: 2100000, guid: 9206d60dd2eb7cf4aab646e28a47d32c, type: 2}
+  Green_mat: {fileID: 2100000, guid: f33c3eb0aae13604f9a4fdaf182530a2, type: 2}
+  Frozen_mat: {fileID: 2100000, guid: 6f37dcadd45238649a9fd9d140932d5a, type: 2}
   tagged: 0
   frozen: 0
   type: 1
   Kinematic_Flee: 1
-  Kinematic_Seek: 0
+  Kinematic_Seek: 1
   speed: 10
-  Target: {fileID: 221290362}
+  Target: {fileID: 0}
 --- !u!54 &58848522
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -266,7 +269,7 @@ GameObject:
   - component: {fileID: 144557972}
   - component: {fileID: 144557971}
   m_Layer: 0
-  m_Name: NPC1 (2)
+  m_Name: NPC4
   m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -299,13 +302,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502375f4dd40461418c6fe202165959f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Red_mat: {fileID: 2100000, guid: 9206d60dd2eb7cf4aab646e28a47d32c, type: 2}
+  Green_mat: {fileID: 2100000, guid: f33c3eb0aae13604f9a4fdaf182530a2, type: 2}
+  Frozen_mat: {fileID: 2100000, guid: 6f37dcadd45238649a9fd9d140932d5a, type: 2}
   tagged: 0
   frozen: 0
   type: 1
   Kinematic_Flee: 1
-  Kinematic_Seek: 0
+  Kinematic_Seek: 1
   speed: 10
-  Target: {fileID: 221290362}
+  Target: {fileID: 0}
 --- !u!54 &144557972
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -594,7 +600,7 @@ GameObject:
   - component: {fileID: 221290364}
   - component: {fileID: 221290363}
   m_Layer: 0
-  m_Name: NPC_Chaser
+  m_Name: NPC2
   m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -627,10 +633,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502375f4dd40461418c6fe202165959f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Red_mat: {fileID: 2100000, guid: 9206d60dd2eb7cf4aab646e28a47d32c, type: 2}
+  Green_mat: {fileID: 2100000, guid: f33c3eb0aae13604f9a4fdaf182530a2, type: 2}
+  Frozen_mat: {fileID: 2100000, guid: 6f37dcadd45238649a9fd9d140932d5a, type: 2}
   tagged: 0
   frozen: 0
   type: 0
-  Kinematic_Flee: 0
+  Kinematic_Flee: 1
   Kinematic_Seek: 1
   speed: 12
   Target: {fileID: 0}
@@ -681,7 +690,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9206d60dd2eb7cf4aab646e28a47d32c, type: 2}
+  - {fileID: 2100000, guid: f33c3eb0aae13604f9a4fdaf182530a2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -719,8 +728,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 282275664}
+  - component: {fileID: 282275665}
   m_Layer: 0
-  m_Name: NPC Characters
+  m_Name: Game NPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -746,6 +756,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &282275665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 282275663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7595b291ff3448e44a77a32794434a15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &303974483
 GameObject:
   m_ObjectHideFlags: 0
@@ -1719,7 +1741,7 @@ GameObject:
   - component: {fileID: 1214456847}
   - component: {fileID: 1214456846}
   m_Layer: 0
-  m_Name: NPC1 (1)
+  m_Name: NPC3
   m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1752,13 +1774,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502375f4dd40461418c6fe202165959f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Red_mat: {fileID: 2100000, guid: 9206d60dd2eb7cf4aab646e28a47d32c, type: 2}
+  Green_mat: {fileID: 2100000, guid: f33c3eb0aae13604f9a4fdaf182530a2, type: 2}
+  Frozen_mat: {fileID: 2100000, guid: 6f37dcadd45238649a9fd9d140932d5a, type: 2}
   tagged: 0
   frozen: 0
   type: 1
   Kinematic_Flee: 1
-  Kinematic_Seek: 0
+  Kinematic_Seek: 1
   speed: 10
-  Target: {fileID: 221290362}
+  Target: {fileID: 0}
 --- !u!54 &1214456847
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2879,7 +2904,7 @@ GameObject:
   - component: {fileID: 1891056833}
   - component: {fileID: 1891056832}
   m_Layer: 0
-  m_Name: NPC1 (3)
+  m_Name: NPC5
   m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2912,13 +2937,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502375f4dd40461418c6fe202165959f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Red_mat: {fileID: 2100000, guid: 9206d60dd2eb7cf4aab646e28a47d32c, type: 2}
+  Green_mat: {fileID: 2100000, guid: f33c3eb0aae13604f9a4fdaf182530a2, type: 2}
+  Frozen_mat: {fileID: 2100000, guid: 6f37dcadd45238649a9fd9d140932d5a, type: 2}
   tagged: 0
   frozen: 0
   type: 1
   Kinematic_Flee: 1
-  Kinematic_Seek: 0
+  Kinematic_Seek: 1
   speed: 10
-  Target: {fileID: 221290362}
+  Target: {fileID: 0}
 --- !u!54 &1891056833
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3043,13 +3071,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502375f4dd40461418c6fe202165959f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Red_mat: {fileID: 2100000, guid: 9206d60dd2eb7cf4aab646e28a47d32c, type: 2}
+  Green_mat: {fileID: 2100000, guid: f33c3eb0aae13604f9a4fdaf182530a2, type: 2}
+  Frozen_mat: {fileID: 2100000, guid: 6f37dcadd45238649a9fd9d140932d5a, type: 2}
   tagged: 0
   frozen: 0
   type: 1
   Kinematic_Flee: 1
-  Kinematic_Seek: 0
+  Kinematic_Seek: 1
   speed: 10
-  Target: {fileID: 221290362}
+  Target: {fileID: 0}
 --- !u!54 &1983983922
 Rigidbody:
   m_ObjectHideFlags: 0
