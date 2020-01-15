@@ -7,9 +7,9 @@ public class WrapAround : MonoBehaviour
     private void OnCollisionEnter(Collision other)
     {
         // multiple x and z values by -1: so it wraps around on opposite side
-        if (other.collider.tag == "Chaser" || other.collider.tag == "Runner")
+        if (other.collider.tag == "NPC")
         {
-            Debug.Log("Collided with PC");
+            //Debug.Log("Collided with PC");
             Vector3 pos = other.transform.position;
             pos.x *= -1;
             if (pos.x < 0)

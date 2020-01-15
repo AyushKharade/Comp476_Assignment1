@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Chaser
   - Runner
+  - NPC
   layers:
   - Default
   - TransparentFX
