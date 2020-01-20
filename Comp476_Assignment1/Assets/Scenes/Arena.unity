@@ -1787,9 +1787,9 @@ MonoBehaviour:
   tagged: 0
   frozen: 0
   type: 1
-  Kinematic_Flee: 1
+  Kinematic_Flee: 0
   Kinematic_Seek: 1
-  Kinematic_Wander: 0
+  Kinematic_Wander: 1
   speed: 10
   WanderRotation: 15
   Target: {fileID: 0}
@@ -2952,9 +2952,9 @@ MonoBehaviour:
   tagged: 0
   frozen: 0
   type: 1
-  Kinematic_Flee: 1
+  Kinematic_Flee: 0
   Kinematic_Seek: 1
-  Kinematic_Wander: 0
+  Kinematic_Wander: 1
   speed: 10
   WanderRotation: 15
   Target: {fileID: 0}

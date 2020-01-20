@@ -94,6 +94,9 @@ public class NPC : MonoBehaviour
     {
         Vector3 dir = (transform.position - Target.position).normalized;
         transform.Translate(dir*speed*Time.deltaTime);
+
+        //look away
+        //LookTarget(2);
     }
 
 
@@ -101,6 +104,13 @@ public class NPC : MonoBehaviour
     {
         Vector3 dir = (Target.position- transform.position).normalized;
         transform.Translate(dir * speed * Time.deltaTime);
+
+
+        //orientation
+        LookTarget(1);
+
+        // drawing a raycast
+        Debug.DrawRay(transform.position, (Target.position-transform.position), Color.green);
     }
 
 
@@ -131,6 +141,34 @@ public class NPC : MonoBehaviour
 
     //Behaviors Above #########################################################################################################
     //Behaviors Above #########################################################################################################
+
+    // look towards function
+    void LookTarget(int id)
+    {
+        // if id==1; look at target, you are the chaser
+        // if id==2; look away from target, you are the runner
+        if (id == 1)
+        {
+            Vector3 towardsTarget_Dir = (Target.transform.position - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(towardsTarget_Dir, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 5f * Time.deltaTime);
+        }
+        else if (id == 2)
+        {
+            Vector3 towardsTarget_Dir = (transform.position-Target.transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(towardsTarget_Dir, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 5f * Time.deltaTime);
+        }
+    }
+
+
+
+
+
+
+
+
+
 
     //getter/setters
     public void SetFrozen()
@@ -254,6 +292,8 @@ public class NPC : MonoBehaviour
                 speed += 0.5f;
 
                 chaseTimer = 0;
+
+                GetComponent<Rigidbody>().velocity = Vector3.zero;
             }
         }
     } 
