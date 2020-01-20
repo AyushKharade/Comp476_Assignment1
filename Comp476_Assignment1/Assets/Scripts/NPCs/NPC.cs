@@ -50,13 +50,13 @@ public class NPC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (type+"" == "Chasing" && Target!=null)
+        if (type + "" == "Chasing" && Target != null)
         {
             //chasing behavior
             if (Kinematic_Seek)
                 Kinematic_SeekBehavior();
         }
-        else if(type+"" == "Fleeing" && !frozen && Target!=null)
+        else if (type + "" == "Fleeing" && !frozen && Target != null)
         {
             //running behaviors
             // flee from target
@@ -71,8 +71,8 @@ public class NPC : MonoBehaviour
 
         // to eliminate any forces acting on objects
         //GetComponent<Rigidbody>().velocity = Vector3.zero;
-
-        CatchUp();
+        if(type+"" == "Chasing")
+            CatchUp();
     }
 
 
@@ -177,6 +177,7 @@ public class NPC : MonoBehaviour
 
 
     // chaser catch up, increase chaser's speed if they havent caught anyone in a while
+    // also if target goes too far away, look for a new target.
     void CatchUp()
     {
         chaseTimer += Time.deltaTime;
@@ -185,6 +186,18 @@ public class NPC : MonoBehaviour
             speed += 1;
             chaseTimer = 0;
         }
+
+        /*
+         * because of oscillating while fleeing, checking if target got far away wont work properly
+         * 
+         * 
+        if (Vector3.Distance(Target.transform.position, transform.position) > 25f)
+        {
+            Debug.Log("Target Too Far ("+ Vector3.Distance(Target.transform.position, transform.position) + " units), finding new target.");
+            Target = null;
+
+        }
+        */
     }
 
 
