@@ -28,9 +28,11 @@ public class NPC : MonoBehaviour
     [Header("Behavior")]
     public bool Kinematic_Flee;
     public bool Kinematic_Seek;
+    public bool Kinematic_Wander;
 
-    // other private variables
+    // other public variables
     public float speed = 10f;           // then some random offset in Start()
+    public float WanderRotation = 15f;
 
     public Transform Target;
 
@@ -62,6 +64,8 @@ public class NPC : MonoBehaviour
             // flee from target
             if (Kinematic_Flee)
                 Kinematic_FleeBehavior();
+            else if (Kinematic_Wander)
+                Kinematic_WanderBehavior();
         }
 
 
@@ -83,13 +87,11 @@ public class NPC : MonoBehaviour
 
 
     // behaviors:
+    //Behaviors Below #########################################################################################################
+    //Behaviors Below #########################################################################################################
+
     void Kinematic_FleeBehavior()
     {
-        // get dir away from target
-        // normalize
-        // orient
-        // move at max speed.
-
         Vector3 dir = (transform.position - Target.position).normalized;
         transform.Translate(dir*speed*Time.deltaTime);
     }
@@ -100,6 +102,35 @@ public class NPC : MonoBehaviour
         Vector3 dir = (Target.position- transform.position).normalized;
         transform.Translate(dir * speed * Time.deltaTime);
     }
+
+
+    void Kinematic_WanderBehavior()
+    {
+        // randomly change orientations by a fixed value multiplied by random(-1,+1)
+        // translate on forward axis
+
+        float r = Random.Range(-1f,1f);
+        r *= WanderRotation;
+        r *= 50;
+
+        transform.Rotate(new Vector3(0,r*Time.deltaTime,0));
+        //transform.Rotate(new Vector3(0,5,0));
+
+
+        transform.Translate(transform.forward*speed*Time.deltaTime);
+
+    }
+
+
+
+
+
+
+
+
+
+    //Behaviors Above #########################################################################################################
+    //Behaviors Above #########################################################################################################
 
     //getter/setters
     public void SetFrozen()
