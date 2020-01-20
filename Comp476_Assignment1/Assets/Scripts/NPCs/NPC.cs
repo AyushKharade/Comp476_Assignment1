@@ -34,10 +34,17 @@ public class NPC : MonoBehaviour
 
     public Transform Target;
 
+
+    // if chaser doesnt catch someone for a while, increase speed
+    float chaseTimer = 0;
+
     void Start()
     {
         //speed randomizer:
         speed += Random.Range(-1.5f, 1.5f);
+
+        //Kinematic_Flee = false;
+        //Kinematic_Seek = false;
     }
 
     // Update is called once per frame
@@ -64,6 +71,8 @@ public class NPC : MonoBehaviour
 
         // to eliminate any forces acting on objects
         //GetComponent<Rigidbody>().velocity = Vector3.zero;
+
+        CatchUp();
     }
 
 
@@ -105,6 +114,15 @@ public class NPC : MonoBehaviour
         type = npcType.Chasing;
         GetComponent<Renderer>().material = Red_mat;
         Debug.Log("Chaser set: "+transform.name);
+        Target = null;
+    }
+
+    public void SetRunner()
+    {
+        tagged = false;
+        type = npcType.Fleeing;
+        GetComponent<Renderer>().material = Green_mat;
+        //Debug.Log("Runner set: " + transform.name);
     }
 
     public void ResetStates()
@@ -113,6 +131,11 @@ public class NPC : MonoBehaviour
         tagged = false;
     }
 
+    public void ResetSpeeds()
+    {
+        speed = 10;
+        speed += Random.Range(-1.5f, 1.5f);
+    }
 
     void FindNewTarget()
     {
@@ -136,6 +159,8 @@ public class NPC : MonoBehaviour
         // we know shortest target now, seek that target
         if (shortestTarget != null)
             Target = shortestTarget.transform;
+
+        //Debug.Log("Chosen target: "+Target.transform.name); 
     }
 
 
@@ -151,7 +176,16 @@ public class NPC : MonoBehaviour
 
 
 
-
+    // chaser catch up, increase chaser's speed if they havent caught anyone in a while
+    void CatchUp()
+    {
+        chaseTimer += Time.deltaTime;
+        if (chaseTimer > 15f)
+        {
+            speed += 1;
+            chaseTimer = 0;
+        }
+    }
 
 
 
@@ -163,11 +197,19 @@ public class NPC : MonoBehaviour
     {
         if (type + "" == "Chasing")
         {
-            if (collision.collider.tag == "NPC")
+            if (collision.collider.tag == "NPC" && !collision.collider.GetComponent<NPC>().frozen)
             {
                 //collision.collider.GetComponent<Rigidbody>().AddForce(50*Vector3.up,ForceMode.Impulse);
                 collision.collider.GetComponent<NPC>().SetFrozen();
                 Target = null;
+
+                //update counter in game.cs
+                transform.parent.GetComponent<Game>().RunnerCount-=1;
+
+                // get faster everytime you catch someone
+                speed += 0.5f;
+
+                chaseTimer = 0;
             }
         }
     } 

@@ -638,7 +638,7 @@ MonoBehaviour:
   Frozen_mat: {fileID: 2100000, guid: 6f37dcadd45238649a9fd9d140932d5a, type: 2}
   tagged: 0
   frozen: 0
-  type: 0
+  type: 1
   Kinematic_Flee: 1
   Kinematic_Seek: 1
   speed: 12
