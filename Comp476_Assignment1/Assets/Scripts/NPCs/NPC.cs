@@ -28,6 +28,7 @@ public class NPC : MonoBehaviour
     [Header("Behavior")]
     public bool Kinematic_Flee;
     public bool Kinematic_Seek;
+    public bool Kinematic_Arrive;
     public bool Kinematic_Wander;
 
     // other public variables
@@ -57,6 +58,8 @@ public class NPC : MonoBehaviour
             //chasing behavior
             if (Kinematic_Seek)
                 Kinematic_SeekBehavior();
+            else if (Kinematic_Arrive)
+                Kinematic_ArriveBehavior();
         }
         else if (type + "" == "Fleeing" && !frozen && Target != null)
         {
@@ -113,6 +116,36 @@ public class NPC : MonoBehaviour
         Debug.DrawRay(transform.position, (Target.position-transform.position), Color.green);
     }
 
+    void Kinematic_ArriveBehavior()
+    {
+        // keep going at full speed untill distance is greater than d1
+        // keep going slowly towards target until distance is d2 < distance < d1
+        // if distance > d2 --> stop
+        float d1 = 8, d2 = 3;
+
+        //orientation
+        LookTarget(1);
+
+        Vector3 dir = (Target.position - transform.position).normalized;
+        //get distance
+        float distance = Vector3.Distance(transform.position, Target.position);
+        
+        if (distance > d1)
+            transform.Translate(dir * speed * Time.deltaTime);
+        else if (distance > d2)
+        {
+            //slower
+            //Debug.Log("Distance: " + distance);
+            float newSpeed = speed * (distance / 10f);
+            transform.Translate(dir * newSpeed * Time.deltaTime);
+            //Debug.Log("New speed: "+newSpeed);
+        }
+        else
+            // dont move at all
+
+        // drawing a raycast
+        Debug.DrawRay(transform.position, (Target.position - transform.position), Color.green);
+    }
 
     void Kinematic_WanderBehavior()
     {
