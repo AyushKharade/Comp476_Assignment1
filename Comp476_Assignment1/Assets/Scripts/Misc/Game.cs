@@ -27,6 +27,8 @@ public class Game : MonoBehaviour
         }
 
         CheckRoundEnd();
+
+        //Debug.DrawRay(transform.position, (Vector3.zero - transform.position), Color.green);
     }
 
     void StartGame()

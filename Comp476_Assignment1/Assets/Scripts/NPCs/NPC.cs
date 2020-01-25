@@ -105,9 +105,9 @@ public class NPC : MonoBehaviour
 
     void Kinematic_SeekBehavior()
     {
-        Vector3 dir = (Target.position- transform.position).normalized;
-        transform.Translate(dir * speed * Time.deltaTime);
 
+        Vector3 dir = (Target.position - transform.position).normalized;
+        transform.Translate(dir * speed * Time.deltaTime);
 
         //orientation
         LookTarget(1);
@@ -121,7 +121,7 @@ public class NPC : MonoBehaviour
         // keep going at full speed untill distance is greater than d1
         // keep going slowly towards target until distance is d2 < distance < d1
         // if distance > d2 --> stop
-        float d1 = 8, d2 = 3;
+        float d1 = 8, d2 = 1.5f;
 
         //orientation
         LookTarget(1);
@@ -129,7 +129,7 @@ public class NPC : MonoBehaviour
         Vector3 dir = (Target.position - transform.position).normalized;
         //get distance
         float distance = Vector3.Distance(transform.position, Target.position);
-        
+
         if (distance > d1)
             transform.Translate(dir * speed * Time.deltaTime);
         else if (distance > d2)
@@ -141,7 +141,9 @@ public class NPC : MonoBehaviour
             //Debug.Log("New speed: "+newSpeed);
         }
         else
+        {
             // dont move at all
+        }
 
         // drawing a raycast
         Debug.DrawRay(transform.position, (Target.position - transform.position), Color.green);
