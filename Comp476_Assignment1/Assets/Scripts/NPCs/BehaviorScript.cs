@@ -293,25 +293,25 @@ public class BehaviorScript : MonoBehaviour
             }
             else if (Allow_Unfreezing && SecondaryTarget == null)
             {
-                /*
+                
                 unfreezeCheckTimer += Time.deltaTime;
                 if (unfreezeCheckTimer > unfreezeCheckTime)
                 {
                     //Debug.Log("Called function to find a unfreeze target");
                     unfreezeCheckTimer = 0;
                     FindUnfreezeTarget();
-                    if (SecondaryTarget != null)
-                        Debug.Log("Found a target to unfreeze");
                 }
                 else
                 {
                     Kinematic_WanderBehavior();
-                }*/
+                }
+                /*
                 FindUnfreezeTarget();
                 if (SecondaryTarget == null)
                     Kinematic_WanderBehavior();
                 else
                     Kinematic_ArriveBehavior();
+            */
             }
             else if (SecondaryTarget != null)
             {
