@@ -105,9 +105,28 @@ public class NPC : MonoBehaviour
 
     void Kinematic_SeekBehavior()
     {
-
         Vector3 dir = (Target.position - transform.position).normalized;
-        transform.Translate(dir * speed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, Target.position) < 20)
+            transform.Translate(dir * speed * Time.deltaTime);
+        else
+        {
+            //make sure that you are facing the target.
+            RaycastHit hit;
+            Physics.Raycast(transform.position, transform.forward, out hit, 250f);
+
+            if (hit.collider != null)
+            {
+                if (hit.collider.transform.name == Target.name)
+                {
+                    transform.Translate(dir * speed * Time.deltaTime);
+                }
+                else
+                {
+                    //Debug.Log("Raycast target: " + hit.collider.transform.name);
+                }
+            }
+        }
 
         //orientation
         LookTarget(1);

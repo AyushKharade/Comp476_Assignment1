@@ -175,8 +175,8 @@ MonoBehaviour:
   frozen: 0
   type: 1
   Kinematic_Flee: 1
-  Kinematic_Seek: 0
-  Kinematic_Arrive: 1
+  Kinematic_Seek: 1
+  Kinematic_Arrive: 0
   Kinematic_Wander: 0
   speed: 10
   WanderRotation: 15
@@ -312,8 +312,8 @@ MonoBehaviour:
   frozen: 0
   type: 1
   Kinematic_Flee: 1
-  Kinematic_Seek: 0
-  Kinematic_Arrive: 1
+  Kinematic_Seek: 1
+  Kinematic_Arrive: 0
   Kinematic_Wander: 0
   speed: 10
   WanderRotation: 15
@@ -407,7 +407,7 @@ GameObject:
   - component: {fileID: 175980543}
   - component: {fileID: 175980542}
   - component: {fileID: 175980545}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -646,8 +646,8 @@ MonoBehaviour:
   frozen: 0
   type: 1
   Kinematic_Flee: 1
-  Kinematic_Seek: 0
-  Kinematic_Arrive: 1
+  Kinematic_Seek: 1
+  Kinematic_Arrive: 0
   Kinematic_Wander: 0
   speed: 12
   WanderRotation: 15
@@ -753,7 +753,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 282275663}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.55191773, y: 0.13427329, z: 2.2002625}
+  m_LocalPosition: {x: -0.55191773, y: 0.13427329, z: 7.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1983983920}
@@ -1228,7 +1228,7 @@ GameObject:
   - component: {fileID: 734105150}
   - component: {fileID: 734105149}
   - component: {fileID: 734105148}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1447,7 +1447,7 @@ GameObject:
   - component: {fileID: 925984833}
   - component: {fileID: 925984832}
   - component: {fileID: 925984831}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1791,8 +1791,8 @@ MonoBehaviour:
   frozen: 0
   type: 1
   Kinematic_Flee: 0
-  Kinematic_Seek: 0
-  Kinematic_Arrive: 1
+  Kinematic_Seek: 1
+  Kinematic_Arrive: 0
   Kinematic_Wander: 1
   speed: 10
   WanderRotation: 15
@@ -2013,7 +2013,7 @@ GameObject:
   - component: {fileID: 1443329901}
   - component: {fileID: 1443329900}
   - component: {fileID: 1443329903}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2117,7 +2117,7 @@ GameObject:
   - component: {fileID: 1446010735}
   - component: {fileID: 1446010734}
   - component: {fileID: 1446010733}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2301,7 +2301,7 @@ GameObject:
   - component: {fileID: 1490799336}
   - component: {fileID: 1490799335}
   - component: {fileID: 1490799334}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2393,7 +2393,7 @@ GameObject:
   - component: {fileID: 1574929851}
   - component: {fileID: 1574929850}
   - component: {fileID: 1574929849}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2705,7 +2705,7 @@ GameObject:
   - component: {fileID: 1781589727}
   - component: {fileID: 1781589726}
   - component: {fileID: 1781589729}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2737,8 +2737,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 2.8805475, z: 1}
+  m_Center: {x: -0, y: 0.94027376, z: 0}
 --- !u!23 &1781589727
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2810,7 +2810,7 @@ GameObject:
   - component: {fileID: 1790935898}
   - component: {fileID: 1790935897}
   - component: {fileID: 1790935900}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2957,8 +2957,8 @@ MonoBehaviour:
   frozen: 0
   type: 1
   Kinematic_Flee: 0
-  Kinematic_Seek: 0
-  Kinematic_Arrive: 1
+  Kinematic_Seek: 1
+  Kinematic_Arrive: 0
   Kinematic_Wander: 1
   speed: 10
   WanderRotation: 15
@@ -3094,8 +3094,8 @@ MonoBehaviour:
   frozen: 0
   type: 1
   Kinematic_Flee: 0
-  Kinematic_Seek: 0
-  Kinematic_Arrive: 1
+  Kinematic_Seek: 1
+  Kinematic_Arrive: 0
   Kinematic_Wander: 1
   speed: 10
   WanderRotation: 15
@@ -3313,7 +3313,7 @@ GameObject:
   - component: {fileID: 2015091692}
   - component: {fileID: 2015091691}
   - component: {fileID: 2015091690}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
