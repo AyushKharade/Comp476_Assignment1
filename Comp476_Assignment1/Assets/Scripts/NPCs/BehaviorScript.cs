@@ -44,6 +44,7 @@ public class BehaviorScript : MonoBehaviour
     [Header("Target:")]
     public Transform Target;
     public Transform SecondaryTarget;
+    Vector3 WanderTarget;
 
 
     [Header("Additional Parameters")]
@@ -69,7 +70,7 @@ public class BehaviorScript : MonoBehaviour
         {
             if (Target != null)
                 Kinematic_SeekBehavior();
-            else
+            else if(transform.parent.GetComponent<Game>().RunnerCount>0)
                 ChaserFindNewTarget();
         }
         else if (type + "" == "Fleeing" && !frozen)
@@ -224,13 +225,25 @@ public class BehaviorScript : MonoBehaviour
         {
             Kinematic_WanderBehavior();
         }
-        else if (Target.GetComponent<BehaviorScript>().type + "" == "Chasing" && Target.GetComponent<BehaviorScript>().Target.name == transform.name)
-        {
-            Kinematic_FleeBehavior();
-        }
         else
         {
-            Kinematic_WanderBehavior();
+            // see if chaser's target is you, if yes, flee else wander
+            Transform obj = Target.GetComponent<BehaviorScript>().Target;
+            //Debug.Log("Target for Runner " + transform.name + ", Chaser: " + obj.name);
+
+            //if (Target.GetComponent<BehaviorScript>().Target.name == transform.name)
+            if (obj == null)
+            {
+                Kinematic_WanderBehavior();
+            }
+            else if (obj.name==transform.name)
+            {
+                Kinematic_FleeBehavior();
+            }
+            else
+            {
+                Kinematic_WanderBehavior();
+            }
         }
     }
 
@@ -304,7 +317,7 @@ public class BehaviorScript : MonoBehaviour
         speed += 3;
 
         //set anim
-        GetComponent<Animator>().SetFloat("Blend",1);
+        //GetComponent<Animator>().SetFloat("Blend",1);
     }
 
     public void SetFleeFromTarget(Transform target)
