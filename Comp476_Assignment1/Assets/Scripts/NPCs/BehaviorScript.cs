@@ -64,8 +64,13 @@ public class BehaviorScript : MonoBehaviour
     void Update()
     {
         if (type + "" == "Chasing")
-            Kinematic_SeekBehavior();
-        else if (type + "" == "Fleeing")
+        {
+            if (Target != null)
+                Kinematic_SeekBehavior();
+            else
+                ChaserFindNewTarget();
+        }
+        else if (type + "" == "Fleeing" && Target != null && !frozen)
             Kinematic_FleeBehavior();
     }
 
@@ -187,4 +192,103 @@ public class BehaviorScript : MonoBehaviour
 
 
     // Helper Methods
+    public void ChaserFindNewTarget()
+    {
+        Collider[] temp = Physics.OverlapSphere(transform.position, 55f);
+        //Debug.Log("Objects in overlap sphere array: "+temp.Length);
+        //foreach (Collider c in temp)
+        //{
+        //    Debug.Log("Object:"+c.transform.name);
+        //}
+        // find closest
+        float shortestDistance = 1000;
+        Collider shortestTarget = null;
+        foreach (Collider c in temp)
+        {
+            if (Vector3.Distance(transform.position, c.transform.position) < shortestDistance
+                && c.transform.tag == "NPC" && c.GetComponent<BehaviorScript>().type + "" == "Fleeing" && !c.GetComponent<BehaviorScript>().frozen)
+            {
+                //Debug.Log("Potential Target: "+c.transform.name);
+                if (!c.gameObject.GetComponent<BehaviorScript>().frozen)
+                {
+                    shortestDistance = Vector3.Distance(transform.position, c.transform.position);
+                    shortestTarget = c;
+                }
+            }
+        }
+        // we know shortest target now, seek that target
+        if (shortestTarget != null)
+            Target = shortestTarget.transform;
+    }
+
+
+
+    // freeze tag methods
+    public void SetChaser()
+    {
+        tagged = true;
+        type = npcType.Chasing;
+        //GetComponent<Renderer>().material = Red_mat;
+        transform.GetChild(2).GetComponent<Renderer>().material = Red_mat;
+        Debug.Log("Chaser set: " + transform.name);
+        Target = null;
+
+        //give a speed boost
+        speed += 3;
+    }
+
+    public void SetFleeFromTarget(Transform target)
+    {
+        Target = target;
+    }
+
+    public void SetFrozen()
+    {
+        frozen = true;
+        //GetComponent<Renderer>().material = Frozen_mat;
+        transform.GetChild(2).GetComponent<Renderer>().material = Frozen_mat;
+    }
+
+    //reinit
+    public void ResetStates()
+    {
+        frozen = false;
+        tagged = false;
+        type = npcType.Fleeing;
+        transform.GetChild(2).GetComponent<Renderer>().material = Green_mat;
+    }
+
+    public void ResetSpeeds()
+    {
+        speed = 10;
+        speed += Random.Range(-1.5f, 1.5f);
+    }
+
+
+
+
+
+    // collision
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (type + "" == "Chasing")
+        {
+            if (collision.collider.tag == "NPC" && !collision.collider.GetComponent<BehaviorScript>().frozen)
+            {
+                //collision.collider.GetComponent<Rigidbody>().AddForce(50*Vector3.up,ForceMode.Impulse);
+                collision.collider.GetComponent<BehaviorScript>().SetFrozen();
+                Target = null;
+
+                //update counter in game.cs
+                transform.parent.GetComponent<Game>().RunnerCount -= 1;
+
+                // get faster everytime you catch someone
+                speed += 0.5f;
+
+                chaseTimer = 0;
+
+                GetComponent<Rigidbody>().velocity = Vector3.zero;
+            }
+        }
+    }
 }

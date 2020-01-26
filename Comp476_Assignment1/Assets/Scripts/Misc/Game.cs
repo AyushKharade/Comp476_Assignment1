@@ -39,12 +39,14 @@ public class Game : MonoBehaviour
             //reset
             Debug.Log("Reseting all NPCS before next round.");
 
+            
             for (int i = 0; i < transform.childCount; i++)
             {
-                transform.GetChild(i).GetComponent<NPC>().ResetStates();
-                transform.GetChild(i).GetComponent<NPC>().ResetSpeeds();
-                transform.GetChild(i).GetComponent<NPC>().SetRunner();
+                transform.GetChild(i).GetComponent<BehaviorScript>().ResetStates();
+                transform.GetChild(i).GetComponent<BehaviorScript>().ResetSpeeds();
+                //transform.GetChild(i).GetComponent<BehaviorScript>().SetRunner();
             }
+            
         }
         else
         {
@@ -56,14 +58,15 @@ public class Game : MonoBehaviour
         //randomly make one npc tagged.
         int r = Random.Range(0, transform.childCount);
         GameObject target = transform.GetChild(r).gameObject;
-        target.GetComponent<NPC>().SetChaser();
+        //target.GetComponent<NPC>().SetChaser();
+        target.GetComponent<BehaviorScript>().SetChaser();
 
         // set everyone else's target to this
         for(int i=0;i<transform.childCount;i++)
         {
             if (transform.GetChild(i).transform.name != target.transform.name)
             {
-                transform.GetChild(i).GetComponent<NPC>().SetFleeFromTarget(target.transform);
+                transform.GetChild(i).GetComponent<BehaviorScript>().SetFleeFromTarget(target.transform);
             }
         }
     }
