@@ -232,7 +232,7 @@ public class BehaviorScript : MonoBehaviour
             SecondaryTarget = null;
         else
         {
-            float radius1 = 10f;
+            float radius1 = 20f;
             float radius2 = 2f;
 
             Vector3 arriveVelocity;
@@ -249,7 +249,8 @@ public class BehaviorScript : MonoBehaviour
                 else if (distanceToTarget < radius1 && distanceToTarget > radius2)
                 {
                     // go slower depending on the distance.
-                    float speedFactor = (distanceToTarget / 10f);
+                    float speedFactor = (distanceToTarget / 10f)/2f;
+                    Debug.Log("OG Speed="+speed+", Factorered speed="+speed*speedFactor+" at distance: "+distanceToTarget);
                     arriveVelocity = Dir * speed * speedFactor;
                 }
                 else
