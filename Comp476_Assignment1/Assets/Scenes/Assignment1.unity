@@ -602,13 +602,12 @@ MonoBehaviour:
   Kinematic_Seek: 1
   Kinematic_Arrive: 0
   Always_Flee: 0
-  Allow_Unfreezing: 0
+  Allow_Unfreezing: 1
   speed: 10
   WanderRotation: 15
   Target: {fileID: 0}
   SecondaryTarget: {fileID: 0}
   align_Rotation_Speed: 3
-  allow_unFreezing: 0
   wanderChangeTime: 0.2
 --- !u!136 &188042750
 CapsuleCollider:
@@ -941,13 +940,12 @@ MonoBehaviour:
   Kinematic_Seek: 1
   Kinematic_Arrive: 0
   Always_Flee: 0
-  Allow_Unfreezing: 0
+  Allow_Unfreezing: 1
   speed: 10
   WanderRotation: 15
   Target: {fileID: 0}
   SecondaryTarget: {fileID: 0}
   align_Rotation_Speed: 3
-  allow_unFreezing: 0
   wanderChangeTime: 0.2
 --- !u!1 &992693212
 GameObject:
@@ -1367,13 +1365,12 @@ MonoBehaviour:
   Kinematic_Seek: 1
   Kinematic_Arrive: 0
   Always_Flee: 0
-  Allow_Unfreezing: 0
+  Allow_Unfreezing: 1
   speed: 10
   WanderRotation: 15
   Target: {fileID: 0}
   SecondaryTarget: {fileID: 0}
   align_Rotation_Speed: 3
-  allow_unFreezing: 0
   wanderChangeTime: 0.2
 --- !u!136 &1181672111
 CapsuleCollider:
@@ -1403,7 +1400,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!1 &1259435988
 GameObject:
@@ -1731,7 +1728,6 @@ MonoBehaviour:
   Target: {fileID: 0}
   SecondaryTarget: {fileID: 0}
   align_Rotation_Speed: 3
-  allow_unFreezing: 0
   wanderChangeTime: 0.2
 --- !u!136 &1422282290
 CapsuleCollider:
@@ -1865,13 +1861,12 @@ MonoBehaviour:
   Kinematic_Seek: 1
   Kinematic_Arrive: 0
   Always_Flee: 0
-  Allow_Unfreezing: 0
+  Allow_Unfreezing: 1
   speed: 10
   WanderRotation: 15
   Target: {fileID: 0}
   SecondaryTarget: {fileID: 0}
   align_Rotation_Speed: 3
-  allow_unFreezing: 0
   wanderChangeTime: 0.2
 --- !u!136 &1480595239
 CapsuleCollider:
@@ -2176,13 +2171,12 @@ MonoBehaviour:
   Kinematic_Seek: 1
   Kinematic_Arrive: 0
   Always_Flee: 0
-  Allow_Unfreezing: 0
+  Allow_Unfreezing: 1
   speed: 10
   WanderRotation: 15
   Target: {fileID: 0}
   SecondaryTarget: {fileID: 0}
   align_Rotation_Speed: 3
-  allow_unFreezing: 0
   wanderChangeTime: 0.2
 --- !u!136 &1723327208
 CapsuleCollider:

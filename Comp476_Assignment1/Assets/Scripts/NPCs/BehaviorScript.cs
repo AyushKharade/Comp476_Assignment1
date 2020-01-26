@@ -50,11 +50,12 @@ public class BehaviorScript : MonoBehaviour
 
     [Header("Additional Parameters")]
     public float align_Rotation_Speed;
-    public bool allow_unFreezing;
 
     // if chaser doesnt catch someone for a while, increase speed
     float chaseTimer = 0;
     float wanderTimer = 0;
+    float unfreezeCheckTimer = 0;
+    float unfreezeCheckTime;
     public float wanderChangeTime = 0.2f;             // change orientation every 0.2 seconds
 
     void Start()
@@ -64,6 +65,7 @@ public class BehaviorScript : MonoBehaviour
 
         //set animator's blend value to 0.8 so they are running.
         //GetComponent<Animator>().SetFloat("Blend",0.4f);
+        unfreezeCheckTime= Random.Range(1f, 4f); 
     }
 
     // Update is called once per frame
@@ -192,26 +194,7 @@ public class BehaviorScript : MonoBehaviour
 
         
     }
-    /*
-    void Kinematic_WanderBehavior()
-    {
-        Vector3 currentRandomPoint = WanderCirclePoint();
-        Vector3 moveDirection = (currentRandomPoint - transform.position).normalized;
 
-        //GetComponent<Rigidbody>().velocity = (moveDirection * speed);
-        transform.position += moveDirection * speed * Time.deltaTime;
-
-        //align
-        AlignOrientation(3);
-
-        //draw raycast for details
-        Vector3 drawRay_Origin = new Vector3(transform.position.x, transform.position.y + 8, transform.position.z);
-
-        Debug.DrawRay(drawRay_Origin, transform.forward * 5f, Color.red);
-
-
-    }
-    */
 
     void Kinematic_WanderBehavior()
     {
@@ -233,25 +216,59 @@ public class BehaviorScript : MonoBehaviour
         Vector3 wanderDirectionSpeed = speed * transform.forward;
         transform.position += wanderDirectionSpeed * Time.deltaTime;
     }
-    /*
-    float wanderCircleCenterOffset = 200.0f;
-    float wanderCircleRadius = 100.0f;
-    float maxWanderVariance = 0.0f;
+  
 
-
-    float distanceFromTarget;
-
-
-    Vector3 WanderCirclePoint()
+    // Arrive is used by fleeing characters who are able to unfreeze, thats why it pursues secondary target and not Target (which is chaser)
+    void Kinematic_ArriveBehavior()
     {
-        Vector3 wanderCircleCenter = transform.position + (Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized * wanderCircleCenterOffset);
-        Vector3 wanderCirclePoint = wanderCircleRadius * (new Vector3(Mathf.Cos(Random.Range(maxWanderVariance, Mathf.PI - maxWanderVariance)),
-                                                0.0f,
-                                                Mathf.Sin(Random.Range(maxWanderVariance, Mathf.PI - maxWanderVariance))));
+        // define 2 radius of satisfaction r1, r2
+        // if distance to target > r1, arrive at full speed
+        // if distance <r1 & >r2, keep going slower depening on the distance.
+        // if inside r2, stop completely.
 
-        return (wanderCirclePoint + wanderCircleCenter);
+        if (!SecondaryTarget.GetComponent<BehaviorScript>().frozen)                  // if someone else unfreezes a target.
+            SecondaryTarget = null;
+        else
+        {
+            float radius1 = 10f;
+            float radius2 = 2f;
+
+            Vector3 arriveVelocity;
+
+            if (SecondaryTarget != null)
+            {
+                float distanceToTarget = Vector3.Distance(transform.position, SecondaryTarget.position);
+                Vector3 Dir = (SecondaryTarget.position - transform.position).normalized;
+
+                if (distanceToTarget > radius1)
+                {
+                    arriveVelocity = Dir * speed;
+                }
+                else if (distanceToTarget < radius1 && distanceToTarget > radius2)
+                {
+                    // go slower depending on the distance.
+                    float speedFactor = (distanceToTarget / 10f);
+                    arriveVelocity = Dir * speed * speedFactor;
+                }
+                else
+                {
+                    arriveVelocity = Vector3.zero;
+                }
+
+                transform.position += arriveVelocity * Time.deltaTime;
+                AlignOrientation(4);
+
+                //draw ray
+                Vector3 drawRay_Origin = new Vector3(transform.position.x, transform.position.y + 8, transform.position.z);
+                Debug.DrawRay(drawRay_Origin, (SecondaryTarget.position - drawRay_Origin), Color.blue);
+            }
+            else
+            {
+                Debug.Log("Secondary Target is NULL, called Arrive wrongly.");
+            }
+        }
     }
-    */
+    
 
     // runner behavior
     void RunnerBehavior()
@@ -265,16 +282,40 @@ public class BehaviorScript : MonoBehaviour
         {
             // see if chaser's target is you, if yes, flee else wander
             Transform obj = Target.GetComponent<BehaviorScript>().Target;
-            //Debug.Log("Target for Runner " + transform.name + ", Chaser: " + obj.name);
 
-            //if (Target.GetComponent<BehaviorScript>().Target.name == transform.name)
             if (obj == null)
             {
                 Kinematic_WanderBehavior();
             }
-            else if (obj.name==transform.name || Always_Flee)
+            else if (obj.name == transform.name || Always_Flee)
             {
                 Kinematic_FleeBehavior();
+            }
+            else if (Allow_Unfreezing && SecondaryTarget == null)
+            {
+                /*
+                unfreezeCheckTimer += Time.deltaTime;
+                if (unfreezeCheckTimer > unfreezeCheckTime)
+                {
+                    //Debug.Log("Called function to find a unfreeze target");
+                    unfreezeCheckTimer = 0;
+                    FindUnfreezeTarget();
+                    if (SecondaryTarget != null)
+                        Debug.Log("Found a target to unfreeze");
+                }
+                else
+                {
+                    Kinematic_WanderBehavior();
+                }*/
+                FindUnfreezeTarget();
+                if (SecondaryTarget == null)
+                    Kinematic_WanderBehavior();
+                else
+                    Kinematic_ArriveBehavior();
+            }
+            else if (SecondaryTarget != null)
+            {
+                Kinematic_ArriveBehavior();
             }
             else
             {
@@ -283,7 +324,26 @@ public class BehaviorScript : MonoBehaviour
         }
     }
 
-    void AlignOrientation(int id)   // if id==1, face towards, if id==2, face away, if id==3, face in forward direction
+
+    void FindUnfreezeTarget()
+    {
+        Collider[] temp = Physics.OverlapSphere(transform.position, 100f);
+        // find closest
+        Collider UnfreezeTarget = null;
+        foreach (Collider c in temp)
+        {
+            if (c.transform.tag == "NPC" && c.GetComponent<BehaviorScript>().type + "" == "Fleeing" && c.GetComponent<BehaviorScript>().frozen)
+            {
+                UnfreezeTarget = c;
+                SecondaryTarget = c.transform;
+                //Debug.Log("Secondary Target Assigned " + SecondaryTarget.transform.name + "! for Runner: " + transform.name);
+                break;
+            }
+        }
+        //SecondaryTarget = null;
+    }
+
+    void AlignOrientation(int id)   // if id==1, face towards, if id==2, face away, if id==3, face in forward direction, if id==4, face secondary target
     {
         // get direction
         Quaternion lookDirection;
@@ -293,10 +353,11 @@ public class BehaviorScript : MonoBehaviour
         if (id == 1)
             Dir = (Target.position - transform.position).normalized;
         else if (id == 2)
-            Dir = (transform.position - Target.position.normalized);
-        else
+            Dir = (transform.position - Target.position).normalized;
+        else if (id == 3)
             Dir = transform.forward;
-
+        else
+            Dir = (SecondaryTarget.position-transform.position).normalized;
         //set quaternion to this dir
         lookDirection = Quaternion.LookRotation(Dir, Vector3.up);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, lookDirection, align_Rotation_Speed);
@@ -311,11 +372,6 @@ public class BehaviorScript : MonoBehaviour
     public void ChaserFindNewTarget()
     {
         Collider[] temp = Physics.OverlapSphere(transform.position, 100f);
-        //Debug.Log("Objects in overlap sphere array: "+temp.Length);
-        //foreach (Collider c in temp)
-        //{
-        //    Debug.Log("Object:"+c.transform.name);
-        //}
         // find closest
         float shortestDistance = 1000;
         Collider shortestTarget = null;
@@ -409,6 +465,15 @@ public class BehaviorScript : MonoBehaviour
                 chaseTimer = 0;
 
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
+            }
+        }
+        else if (type + "" == "Fleeing" && Allow_Unfreezing)
+        {
+            if (collision.collider.tag == "NPC" && collision.collider.GetComponent<BehaviorScript>().frozen && collision.collider.name==SecondaryTarget.name)
+            {
+                collision.collider.GetComponent<BehaviorScript>().ResetStates();
+                transform.parent.GetComponent<Game>().RunnerCount += 1;
+                SecondaryTarget = null;
             }
         }
     }
