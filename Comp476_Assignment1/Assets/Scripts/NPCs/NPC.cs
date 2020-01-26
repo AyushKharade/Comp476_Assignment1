@@ -43,8 +43,7 @@ public class NPC : MonoBehaviour
 
     void Start()
     {
-        //speed randomizer:
-        speed += Random.Range(-1.5f, 1.5f);
+        
 
         //Kinematic_Flee = false;
         //Kinematic_Seek = false;
