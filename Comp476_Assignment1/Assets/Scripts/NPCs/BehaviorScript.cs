@@ -50,6 +50,7 @@ public class BehaviorScript : MonoBehaviour
 
     [Header("Additional Parameters")]
     public float align_Rotation_Speed;
+    public bool AllowAnimations;
 
     // if chaser doesnt catch someone for a while, increase speed
     float chaseTimer = 0;
@@ -64,7 +65,8 @@ public class BehaviorScript : MonoBehaviour
         speed += Random.Range(-1.5f, 1.5f);
 
         //set animator's blend value to 0.8 so they are running.
-        //GetComponent<Animator>().SetFloat("Blend",0.4f);
+        if(AllowAnimations)
+            GetComponent<Animator>().SetFloat("Blend",0.4f);
         unfreezeCheckTime= Random.Range(1f, 4f); 
     }
 
@@ -409,7 +411,8 @@ public class BehaviorScript : MonoBehaviour
         speed += 3;
 
         //set anim
-        //GetComponent<Animator>().SetFloat("Blend",1);
+        if(AllowAnimations)
+            GetComponent<Animator>().SetFloat("Blend",0.4f);
     }
 
     public void SetFleeFromTarget(Transform target)
@@ -422,6 +425,8 @@ public class BehaviorScript : MonoBehaviour
         frozen = true;
         //GetComponent<Renderer>().material = Frozen_mat;
         transform.GetChild(2).GetComponent<Renderer>().material = Frozen_mat;
+        if(AllowAnimations)
+            GetComponent<Animator>().SetFloat("Blend", 0);
     }
 
     //reinit
@@ -432,7 +437,10 @@ public class BehaviorScript : MonoBehaviour
         type = npcType.Fleeing;
         transform.GetChild(2).GetComponent<Renderer>().material = Green_mat;
 
-        GetComponent<Animator>().SetFloat("Blend", 0);
+        if(AllowAnimations)
+            GetComponent<Animator>().SetFloat("Blend", 0.4f);
+
+        //transform.position = new Vector3(transform.position.x, -0.29f, transform.position.z);
     }
 
     public void ResetSpeeds()
@@ -469,7 +477,7 @@ public class BehaviorScript : MonoBehaviour
         }
         else if (type + "" == "Fleeing" && Allow_Unfreezing)
         {
-            if (collision.collider.tag == "NPC" && collision.collider.GetComponent<BehaviorScript>().frozen && collision.collider.name==SecondaryTarget.name)
+            if (collision.collider.tag == "NPC" && collision.collider.GetComponent<BehaviorScript>().frozen)
             {
                 collision.collider.GetComponent<BehaviorScript>().ResetStates();
                 transform.parent.GetComponent<Game>().RunnerCount += 1;
