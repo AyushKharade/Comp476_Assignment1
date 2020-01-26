@@ -75,14 +75,29 @@ public class BehaviorScript : MonoBehaviour
        
         /* If distance is small, character can directly go towards it
          * If its large, then character must face it before going towards it.
-         * 
          */
 
-        Vector3 Dir = (Target.position - transform.position).normalized;
+        Vector3 Dir = (Target.position - transform.position).normalized;            // Find Normalized Direction
+        Vector3 seekVelocity = Dir * speed;                                         // find seek velocity (max speed * direction)
 
-        // find seek velocity (max speed * direction)
-        Vector3 seekVelocity = Dir * speed;
-        transform.position += seekVelocity * Time.deltaTime;
+
+        // Check Distance, if its larger, then check if you are facing the target.
+        if (Vector3.Distance(Target.position, transform.position) < 10)
+        {
+            transform.position += seekVelocity * Time.deltaTime;
+        }
+        else
+        {
+            //make sure to check if you are facing your target.
+            float angle = 10f;
+            if (Vector3.Angle(transform.forward, (Target.position - transform.position)) < angle)
+            {
+                //allowed to move
+                transform.position += seekVelocity * Time.deltaTime;
+            }
+            // other wise dont move
+        }
+
 
 
         //align orientation
@@ -96,25 +111,7 @@ public class BehaviorScript : MonoBehaviour
         Debug.DrawRay(drawRay_Origin, transform.forward*5f, Color.red);
     }
 
-    // Orientation Function
-    // look towards function
-    void LookTarget(int id)
-    {
-        // if id==1; look at target, you are the chaser
-        // if id==2; look away from target, you are the runner
-        if (id == 1)
-        {
-            Vector3 towardsTarget_Dir = (Target.transform.position - transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(towardsTarget_Dir, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 5f * Time.deltaTime);
-        }
-        else if (id == 2)
-        {
-            Vector3 towardsTarget_Dir = (transform.position - Target.transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(towardsTarget_Dir, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, 5f * Time.deltaTime);
-        }
-    }
+   
 
     void AlignOrientation()
     {
