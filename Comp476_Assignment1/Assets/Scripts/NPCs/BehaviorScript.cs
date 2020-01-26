@@ -34,8 +34,9 @@ public class BehaviorScript : MonoBehaviour
 
 
     [Header("Behavior: Fleeing")]
-    public bool Kinematic_Flee;
-    public bool Kinematic_Wander;
+    public bool Always_Flee;
+    public bool Allow_Unfreezing;
+    //public bool Kinematic_Wander;
 
     // other public variables
     public float speed = 10f;           // then some random offset in Start()
@@ -44,7 +45,7 @@ public class BehaviorScript : MonoBehaviour
     [Header("Target:")]
     public Transform Target;
     public Transform SecondaryTarget;
-    Vector3 WanderTarget;
+    //Vector3 WanderTarget;
 
 
     [Header("Additional Parameters")]
@@ -52,7 +53,9 @@ public class BehaviorScript : MonoBehaviour
     public bool allow_unFreezing;
 
     // if chaser doesnt catch someone for a while, increase speed
-    public float chaseTimer = 0;
+    float chaseTimer = 0;
+    float wanderTimer = 0;
+    public float wanderChangeTime = 0.2f;             // change orientation every 0.2 seconds
 
     void Start()
     {
@@ -75,9 +78,11 @@ public class BehaviorScript : MonoBehaviour
         }
         else if (type + "" == "Fleeing" && !frozen)
         {
-            RunnerBehavior();
+            if(Always_Flee && Target!=null)
+                Kinematic_FleeBehavior();
+            else
+                RunnerBehavior();
         }
-        //Kinematic_FleeBehavior();
     }
 
 
@@ -158,15 +163,16 @@ public class BehaviorScript : MonoBehaviour
         Vector3 fleeVelocity = Dir * speed;                                         // find seek velocity (max speed * direction)
 
         // Check Distance, if its larger, then check if you are facing the target.
-        if (Vector3.Distance(Target.position, transform.position) < 10)
+        if (Vector3.Distance(Target.position, transform.position) < 10 || true)
         {
             transform.position += fleeVelocity * Time.deltaTime;
         }
+        /*
         else
         {
             //make sure to check if you are facing your target.
-            float angle = 10f;
-            if (Vector3.Angle(transform.forward, (transform.position - Target.position)) < angle)
+            float angle = 270f;
+            if (Vector3.Angle(transform.forward, transform.position - Target.position) > angle)
             {
                 //allowed to move
                 transform.position += fleeVelocity * Time.deltaTime;
@@ -174,10 +180,11 @@ public class BehaviorScript : MonoBehaviour
             // other wise move at half speed
             else
             {
-                fleeVelocity = Dir * 0.5f * speed;
+                fleeVelocity = Dir * 0.05f * speed;
                 transform.position += fleeVelocity * Time.deltaTime;
             }
         }
+        */
 
 
         //align orientation
@@ -185,7 +192,7 @@ public class BehaviorScript : MonoBehaviour
 
         
     }
-
+    /*
     void Kinematic_WanderBehavior()
     {
         Vector3 currentRandomPoint = WanderCirclePoint();
@@ -196,8 +203,37 @@ public class BehaviorScript : MonoBehaviour
 
         //align
         AlignOrientation(3);
-    }
 
+        //draw raycast for details
+        Vector3 drawRay_Origin = new Vector3(transform.position.x, transform.position.y + 8, transform.position.z);
+
+        Debug.DrawRay(drawRay_Origin, transform.forward * 5f, Color.red);
+
+
+    }
+    */
+
+    void Kinematic_WanderBehavior()
+    {
+        // randomly change orientations by a fixed value multiplied by random(-1,+1)
+        // translate on forward axis
+
+
+        wanderTimer += Time.deltaTime;
+        if (wanderTimer > wanderChangeTime)
+        {
+            float r = Random.Range(-1f, 1f);
+            r *= WanderRotation;
+            r *= 50;
+
+            transform.Rotate(new Vector3(0, r * Time.deltaTime, 0));
+            wanderTimer = 0;
+        }
+
+        Vector3 wanderDirectionSpeed = speed * transform.forward;
+        transform.position += wanderDirectionSpeed * Time.deltaTime;
+    }
+    /*
     float wanderCircleCenterOffset = 200.0f;
     float wanderCircleRadius = 100.0f;
     float maxWanderVariance = 0.0f;
@@ -215,7 +251,7 @@ public class BehaviorScript : MonoBehaviour
 
         return (wanderCirclePoint + wanderCircleCenter);
     }
-
+    */
 
     // runner behavior
     void RunnerBehavior()
@@ -236,7 +272,7 @@ public class BehaviorScript : MonoBehaviour
             {
                 Kinematic_WanderBehavior();
             }
-            else if (obj.name==transform.name)
+            else if (obj.name==transform.name || Always_Flee)
             {
                 Kinematic_FleeBehavior();
             }
@@ -274,7 +310,7 @@ public class BehaviorScript : MonoBehaviour
     // Helper Methods
     public void ChaserFindNewTarget()
     {
-        Collider[] temp = Physics.OverlapSphere(transform.position, 55f);
+        Collider[] temp = Physics.OverlapSphere(transform.position, 100f);
         //Debug.Log("Objects in overlap sphere array: "+temp.Length);
         //foreach (Collider c in temp)
         //{
