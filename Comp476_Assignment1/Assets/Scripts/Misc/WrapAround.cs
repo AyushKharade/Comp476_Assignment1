@@ -9,7 +9,6 @@ public class WrapAround : MonoBehaviour
         // multiple x and z values by -1: so it wraps around on opposite side
         if (other.collider.tag == "NPC")
         {
-            Debug.Log("Collided with PC");
             Vector3 pos = other.transform.position;
             pos.x *= -1;
             if (pos.x < 0)

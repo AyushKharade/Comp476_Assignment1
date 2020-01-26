@@ -63,12 +63,17 @@ public class BehaviorScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Kinematic_SeekBehavior();
+        if (type + "" == "Chasing")
+            Kinematic_SeekBehavior();
+        else if (type + "" == "Fleeing")
+            Kinematic_FleeBehavior();
     }
 
 
     // ################################################################
     // Behaviors Below
+
+        // chase behaviors
 
     void Kinematic_SeekBehavior()
     {
@@ -76,7 +81,6 @@ public class BehaviorScript : MonoBehaviour
         /* If distance is small, character can directly go towards it
          * If its large, then character must face it before going towards it.
          */
-
         Vector3 Dir = (Target.position - transform.position).normalized;            // Find Normalized Direction
         Vector3 seekVelocity = Dir * speed;                                         // find seek velocity (max speed * direction)
 
@@ -95,13 +99,18 @@ public class BehaviorScript : MonoBehaviour
                 //allowed to move
                 transform.position += seekVelocity * Time.deltaTime;
             }
-            // other wise dont move
+            // other wise move at half speed
+            else
+            {
+                seekVelocity = Dir * 0.5f * speed;
+                transform.position += seekVelocity * Time.deltaTime;
+            }
         }
 
 
 
         //align orientation
-        AlignOrientation();
+        AlignOrientation(1);
 
 
         //draw raycast for details
@@ -111,16 +120,61 @@ public class BehaviorScript : MonoBehaviour
         Debug.DrawRay(drawRay_Origin, transform.forward*5f, Color.red);
     }
 
-   
 
-    void AlignOrientation()
+
+    // flee behaviors
+
+    void Kinematic_FleeBehavior()
+    {
+        /*
+         * If chaser is not actively chasing you, wander or unfreeze targets
+         * if chaser is chasing you, flee
+         */
+
+        //get direction away from target, flee, face away 
+        
+        Vector3 Dir = (transform.position- Target.position).normalized;            // Find Normalized Direction
+        Vector3 fleeVelocity = Dir * speed;                                         // find seek velocity (max speed * direction)
+
+        // Check Distance, if its larger, then check if you are facing the target.
+        if (Vector3.Distance(Target.position, transform.position) < 10)
+        {
+            transform.position += fleeVelocity * Time.deltaTime;
+        }
+        else
+        {
+            //make sure to check if you are facing your target.
+            float angle = 10f;
+            if (Vector3.Angle(transform.forward, (transform.position - Target.position)) < angle)
+            {
+                //allowed to move
+                transform.position += fleeVelocity * Time.deltaTime;
+            }
+            // other wise move at half speed
+            else
+            {
+                fleeVelocity = Dir * 0.5f * speed;
+                transform.position += fleeVelocity * Time.deltaTime;
+            }
+        }
+
+
+        //align orientation
+        AlignOrientation(2);
+    }
+
+
+    void AlignOrientation(int id)   // if id==1, face towards, if id==2, face away
     {
         // get direction
         Quaternion lookDirection;
         Vector3 Dir;
 
         //get direction towards target:
-        Dir = (Target.position - transform.position).normalized;
+        if (id == 1)
+            Dir = (Target.position - transform.position).normalized;
+        else
+            Dir = (transform.position - Target.position.normalized);
 
         //set quaternion to this dir
         lookDirection = Quaternion.LookRotation(Dir, Vector3.up);
