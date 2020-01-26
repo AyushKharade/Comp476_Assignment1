@@ -43,13 +43,15 @@ public class BehaviorScript : MonoBehaviour
 
     [Header("Target:")]
     public Transform Target;
+    public Transform SecondaryTarget;
 
 
     [Header("Additional Parameters")]
     public float align_Rotation_Speed;
+    public bool allow_unFreezing;
 
     // if chaser doesnt catch someone for a while, increase speed
-    float chaseTimer = 0;
+    public float chaseTimer = 0;
 
     void Start()
     {
@@ -57,7 +59,7 @@ public class BehaviorScript : MonoBehaviour
         speed += Random.Range(-1.5f, 1.5f);
 
         //set animator's blend value to 0.8 so they are running.
-        //GetComponent<Animator>().SetFloat("Blend",0.8f);
+        //GetComponent<Animator>().SetFloat("Blend",0.4f);
     }
 
     // Update is called once per frame
@@ -70,19 +72,22 @@ public class BehaviorScript : MonoBehaviour
             else
                 ChaserFindNewTarget();
         }
-        else if (type + "" == "Fleeing" && Target != null && !frozen)
-            Kinematic_FleeBehavior();
+        else if (type + "" == "Fleeing" && !frozen)
+        {
+            RunnerBehavior();
+        }
+        //Kinematic_FleeBehavior();
     }
 
 
     // ################################################################
     // Behaviors Below
 
-        // chase behaviors
+    // chase behaviors
 
     void Kinematic_SeekBehavior()
     {
-       
+
         /* If distance is small, character can directly go towards it
          * If its large, then character must face it before going towards it.
          */
@@ -119,10 +124,20 @@ public class BehaviorScript : MonoBehaviour
 
 
         //draw raycast for details
-        Vector3 drawRay_Origin = new Vector3(transform.position.x, transform.position.y+8, transform.position.z);
-        Debug.DrawRay(drawRay_Origin, (Target.position-drawRay_Origin), Color.green);
+        Vector3 drawRay_Origin = new Vector3(transform.position.x, transform.position.y + 8, transform.position.z);
+        Debug.DrawRay(drawRay_Origin, (Target.position - drawRay_Origin), Color.green);
 
-        Debug.DrawRay(drawRay_Origin, transform.forward*5f, Color.red);
+        Debug.DrawRay(drawRay_Origin, transform.forward * 5f, Color.red);
+
+        // every 5 seconds, find new target (so if anyone else is closer, chase them instead.
+        chaseTimer += Time.deltaTime;
+        if (chaseTimer > 5f && chaseTimer < 5.10f)
+            ChaserFindNewTarget();
+        if (chaseTimer > 10f)
+        {
+            speed += 1;
+            chaseTimer = 0;
+        }
     }
 
 
@@ -166,10 +181,60 @@ public class BehaviorScript : MonoBehaviour
 
         //align orientation
         AlignOrientation(2);
+
+        
+    }
+
+    void Kinematic_WanderBehavior()
+    {
+        Vector3 currentRandomPoint = WanderCirclePoint();
+        Vector3 moveDirection = (currentRandomPoint - transform.position).normalized;
+
+        //GetComponent<Rigidbody>().velocity = (moveDirection * speed);
+        transform.position += moveDirection * speed * Time.deltaTime;
+
+        //align
+        AlignOrientation(3);
+    }
+
+    float wanderCircleCenterOffset = 200.0f;
+    float wanderCircleRadius = 100.0f;
+    float maxWanderVariance = 0.0f;
+
+
+    float distanceFromTarget;
+
+
+    Vector3 WanderCirclePoint()
+    {
+        Vector3 wanderCircleCenter = transform.position + (Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized * wanderCircleCenterOffset);
+        Vector3 wanderCirclePoint = wanderCircleRadius * (new Vector3(Mathf.Cos(Random.Range(maxWanderVariance, Mathf.PI - maxWanderVariance)),
+                                                0.0f,
+                                                Mathf.Sin(Random.Range(maxWanderVariance, Mathf.PI - maxWanderVariance))));
+
+        return (wanderCirclePoint + wanderCircleCenter);
     }
 
 
-    void AlignOrientation(int id)   // if id==1, face towards, if id==2, face away
+    // runner behavior
+    void RunnerBehavior()
+    {
+        // if target isnt chasing you, wander or unfreeze target if allowed  to, if chasing you flee
+        if (Target == null)
+        {
+            Kinematic_WanderBehavior();
+        }
+        else if (Target.GetComponent<BehaviorScript>().type + "" == "Chasing" && Target.GetComponent<BehaviorScript>().Target.name == transform.name)
+        {
+            Kinematic_FleeBehavior();
+        }
+        else
+        {
+            Kinematic_WanderBehavior();
+        }
+    }
+
+    void AlignOrientation(int id)   // if id==1, face towards, if id==2, face away, if id==3, face in forward direction
     {
         // get direction
         Quaternion lookDirection;
@@ -178,8 +243,10 @@ public class BehaviorScript : MonoBehaviour
         //get direction towards target:
         if (id == 1)
             Dir = (Target.position - transform.position).normalized;
-        else
+        else if (id == 2)
             Dir = (transform.position - Target.position.normalized);
+        else
+            Dir = transform.forward;
 
         //set quaternion to this dir
         lookDirection = Quaternion.LookRotation(Dir, Vector3.up);
@@ -235,6 +302,9 @@ public class BehaviorScript : MonoBehaviour
 
         //give a speed boost
         speed += 3;
+
+        //set anim
+        GetComponent<Animator>().SetFloat("Blend",1);
     }
 
     public void SetFleeFromTarget(Transform target)
@@ -256,6 +326,8 @@ public class BehaviorScript : MonoBehaviour
         tagged = false;
         type = npcType.Fleeing;
         transform.GetChild(2).GetComponent<Renderer>().material = Green_mat;
+
+        GetComponent<Animator>().SetFloat("Blend", 0);
     }
 
     public void ResetSpeeds()
