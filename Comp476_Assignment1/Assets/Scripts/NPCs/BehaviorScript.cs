@@ -43,7 +43,11 @@ public class BehaviorScript : MonoBehaviour
 
     [Header("Target:")]
     public Transform Target;
-    
+
+
+    [Header("Additional Parameters")]
+    public float align_Rotation_Speed;
+
     // if chaser doesnt catch someone for a while, increase speed
     float chaseTimer = 0;
 
@@ -51,6 +55,9 @@ public class BehaviorScript : MonoBehaviour
     {
         //speed randomizer:
         speed += Random.Range(-1.5f, 1.5f);
+
+        //set animator's blend value to 0.8 so they are running.
+        //GetComponent<Animator>().SetFloat("Blend",0.8f);
     }
 
     // Update is called once per frame
@@ -80,6 +87,13 @@ public class BehaviorScript : MonoBehaviour
 
         //align orientation
         AlignOrientation();
+
+
+        //draw raycast for details
+        Vector3 drawRay_Origin = new Vector3(transform.position.x, transform.position.y+8, transform.position.z);
+        Debug.DrawRay(drawRay_Origin, (Target.position-drawRay_Origin), Color.green);
+
+        Debug.DrawRay(drawRay_Origin, transform.forward*5f, Color.red);
     }
 
     // Orientation Function
@@ -107,14 +121,13 @@ public class BehaviorScript : MonoBehaviour
         // get direction
         Quaternion lookDirection;
         Vector3 Dir;
-        float rotationSpeed = 5f;
 
         //get direction towards target:
         Dir = (Target.position - transform.position).normalized;
 
         //set quaternion to this dir
         lookDirection = Quaternion.LookRotation(Dir, Vector3.up);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookDirection, rotationSpeed);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookDirection, align_Rotation_Speed);
 
     }
 
