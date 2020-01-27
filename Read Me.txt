@@ -1,0 +1,62 @@
+Comp 476: Assignment 1
+Ayush Kharade
+ID: 40042388
+_____________________________________________________________________________
+
+Details:
+
+There are 6 NPCs in total in the scene, which uses the Robot Kyle model from the lab materials.
+It uses a capsule collider for collisions, and Unity's collision functions are used to Tag / Unfreeze NPCs.
+
+Each NPC has a Sphere on top of their head indicating their behaviors.
+- Red Sphere: NPC who is chasing
+- Green Sphere: NPC who is fleeing
+- Blue Sphere: NPC who is frozen.
+
+Game starts with all NPCs being a green sphere, they will wander, until the Game.cs script randomly selects one NPC to be the tagged NPC.
+
+
+Behaviors:
+- Kinematic Seek (Chasing NPC)
+- Kinematic Wander
+- Kinematic Arrive (unfreezing NPCs)
+- Align Orientation
+
+
+Once game starts: (Green NPC means the ones who are running and not yet frozen)
+
+- All other NPCs are notified of the NPC who is chasing them
+- If a green NPC is not being actively seeked they will wander.
+- If a green NPC is being actively seeked they will flee.
+- If a green NPC is set as 'Always Flee' in the inspector, they will always flee, even if they are not being seeked.
+- If a green NPC is tagged, they turn blue and wait until either the game ends or someone else frees them.
+
+- If a green NPC is set as 'Allow Unfreezing', if they are not being seeked, instead of wandering, they can unfreeze other NPCS
+  To do this, they have a secondary Target, and they use the 'Arrive' behavior to reach them.
+
+- A red (chasing) NPC gets a bit faster everytime they tag someone. Also they get faster incrementally, if they havent tagged anyone for 10 seconds.
+  This is done to make sure that the game ends eventually and restarts  with someone else as the tagged NPC.
+
+- A red NPC, every 5 seconds re-calculates to find the closest NPC, so that if original target got far, it would seek the closest one.
+
+
+
+Aligning:
+- Chaser NPC has to align their orientation towards target in order to seek at max velocity unless they are close to their target.
+- If a chaser NPC is not facing their target, they only move at 50% of their max speed.
+
+
+Animations:
+- Animations if used might sometime bug the program, these are the animations that came with the robot model from lab material.
+- To use animations simple check 'Allow Animations' boolean in the inspector for every NPC.
+
+
+
+
+Additional Details:
+- Debug raycasts are drawn to help recognise behavior on screen.
+- Chasing NPC has a green ray cast towards the target, to show the direction.
+- Chasing NPC has a red ray cast to show their forward direction.
+
+- NPCs who are trying to unfreeze their targets have a blue raycasts to show their direction.
+- Make sure to have gizmons enabled in game view to see these raycasts.
