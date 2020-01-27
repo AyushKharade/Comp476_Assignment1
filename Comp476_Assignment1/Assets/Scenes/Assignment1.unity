@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: b6418927c624c4f448ca29c548a24d90, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -600,7 +600,6 @@ MonoBehaviour:
   frozen: 0
   type: 1
   Kinematic_Seek: 1
-  Kinematic_Arrive: 0
   Always_Flee: 0
   Allow_Unfreezing: 1
   speed: 10
@@ -608,7 +607,7 @@ MonoBehaviour:
   Target: {fileID: 0}
   SecondaryTarget: {fileID: 0}
   align_Rotation_Speed: 3
-  AllowAnimations: 1
+  AllowAnimations: 0
   wanderChangeTime: 0.2
 --- !u!136 &188042750
 CapsuleCollider:
@@ -939,7 +938,6 @@ MonoBehaviour:
   frozen: 0
   type: 1
   Kinematic_Seek: 1
-  Kinematic_Arrive: 0
   Always_Flee: 0
   Allow_Unfreezing: 1
   speed: 10
@@ -947,7 +945,7 @@ MonoBehaviour:
   Target: {fileID: 0}
   SecondaryTarget: {fileID: 0}
   align_Rotation_Speed: 3
-  AllowAnimations: 1
+  AllowAnimations: 0
   wanderChangeTime: 0.2
 --- !u!1 &992693212
 GameObject:
@@ -1130,8 +1128,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1005156069}
-  m_LocalRotation: {x: 0.20878458, y: 0.27417454, z: -0.061155893, w: 0.93674827}
-  m_LocalPosition: {x: -43.23089, y: 28.687668, z: -60.360336}
+  m_LocalRotation: {x: 0.2554446, y: 0.004701048, z: -0.0012392206, w: 0.96681154}
+  m_LocalPosition: {x: -0.86006916, y: 34.36924, z: -78.033424}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1365,7 +1363,6 @@ MonoBehaviour:
   frozen: 0
   type: 1
   Kinematic_Seek: 1
-  Kinematic_Arrive: 0
   Always_Flee: 0
   Allow_Unfreezing: 1
   speed: 10
@@ -1373,7 +1370,7 @@ MonoBehaviour:
   Target: {fileID: 0}
   SecondaryTarget: {fileID: 0}
   align_Rotation_Speed: 3
-  AllowAnimations: 1
+  AllowAnimations: 0
   wanderChangeTime: 0.2
 --- !u!136 &1181672111
 CapsuleCollider:
@@ -1723,15 +1720,14 @@ MonoBehaviour:
   frozen: 0
   type: 1
   Kinematic_Seek: 1
-  Kinematic_Arrive: 0
   Always_Flee: 0
-  Allow_Unfreezing: 0
+  Allow_Unfreezing: 1
   speed: 10
   WanderRotation: 15
   Target: {fileID: 0}
   SecondaryTarget: {fileID: 0}
   align_Rotation_Speed: 3
-  AllowAnimations: 1
+  AllowAnimations: 0
   wanderChangeTime: 0.2
 --- !u!136 &1422282290
 CapsuleCollider:
@@ -1863,7 +1859,6 @@ MonoBehaviour:
   frozen: 0
   type: 1
   Kinematic_Seek: 1
-  Kinematic_Arrive: 0
   Always_Flee: 0
   Allow_Unfreezing: 1
   speed: 10
@@ -1871,7 +1866,7 @@ MonoBehaviour:
   Target: {fileID: 0}
   SecondaryTarget: {fileID: 0}
   align_Rotation_Speed: 3
-  AllowAnimations: 1
+  AllowAnimations: 0
   wanderChangeTime: 0.2
 --- !u!136 &1480595239
 CapsuleCollider:
@@ -2045,7 +2040,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 795d09fd0b404d94ba6216144b8cc477, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2174,7 +2169,6 @@ MonoBehaviour:
   frozen: 0
   type: 1
   Kinematic_Seek: 1
-  Kinematic_Arrive: 0
   Always_Flee: 0
   Allow_Unfreezing: 1
   speed: 10
@@ -2182,7 +2176,7 @@ MonoBehaviour:
   Target: {fileID: 0}
   SecondaryTarget: {fileID: 0}
   align_Rotation_Speed: 3
-  AllowAnimations: 1
+  AllowAnimations: 0
   wanderChangeTime: 0.2
 --- !u!136 &1723327208
 CapsuleCollider:

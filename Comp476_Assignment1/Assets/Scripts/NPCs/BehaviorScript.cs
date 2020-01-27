@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*
+ * Ayush Kharade, ID 40042388
+ * Comp 476: A1
+ *
+ * */
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,11 +12,11 @@ public class BehaviorScript : MonoBehaviour
     /*
      * Structure:
      * 
-     * Bool for each behavior, public, enable / disable
-     * One common script.
-     * SetFunctions for setting a tagged npc
-     * 
-     
+     * Enum type for fleeing or chasing type of NPC behavior
+     * Chaser always seeks target. Every fixed time, looks for target again, so to switch to a closer target if original target got too far.
+     * Fleeing NPCs if not set to 'Always Flee' will wander as long as they are not being seeked
+     * Fleeing NPCs if set to 'allow Unfreezing' will arrive on frozen targets and unfreeze them as long as they are not being chased.
+     * Game goes on forever.
      */
 
     //variables
@@ -30,7 +35,7 @@ public class BehaviorScript : MonoBehaviour
 
     [Header("Behavior: Chasing")]
     public bool Kinematic_Seek;
-    public bool Kinematic_Arrive;
+    //public bool Kinematic_Arrive;
 
 
     [Header("Behavior: Fleeing")]
@@ -87,6 +92,8 @@ public class BehaviorScript : MonoBehaviour
             else
                 RunnerBehavior();
         }
+
+        transform.position = new Vector3(transform.position.x, -0.29f, transform.position.z);
     }
 
 
@@ -94,7 +101,6 @@ public class BehaviorScript : MonoBehaviour
     // Behaviors Below
 
     // chase behaviors
-
     void Kinematic_SeekBehavior()
     {
 
@@ -139,7 +145,7 @@ public class BehaviorScript : MonoBehaviour
 
         Debug.DrawRay(drawRay_Origin, transform.forward * 5f, Color.red);
 
-        // every 5 seconds, find new target (so if anyone else is closer, chase them instead.
+        // every 5 seconds, find new target (so if anyone else is closer, chase them instead.)
         chaseTimer += Time.deltaTime;
         if (chaseTimer > 5f && chaseTimer < 5.10f)
             ChaserFindNewTarget();
@@ -153,7 +159,6 @@ public class BehaviorScript : MonoBehaviour
 
 
     // flee behaviors
-
     void Kinematic_FleeBehavior()
     {
         /*
@@ -171,30 +176,10 @@ public class BehaviorScript : MonoBehaviour
         {
             transform.position += fleeVelocity * Time.deltaTime;
         }
-        /*
-        else
-        {
-            //make sure to check if you are facing your target.
-            float angle = 270f;
-            if (Vector3.Angle(transform.forward, transform.position - Target.position) > angle)
-            {
-                //allowed to move
-                transform.position += fleeVelocity * Time.deltaTime;
-            }
-            // other wise move at half speed
-            else
-            {
-                fleeVelocity = Dir * 0.05f * speed;
-                transform.position += fleeVelocity * Time.deltaTime;
-            }
-        }
-        */
-
+        
 
         //align orientation
         AlignOrientation(2);
-
-        
     }
 
 
@@ -308,13 +293,6 @@ public class BehaviorScript : MonoBehaviour
                 {
                     Kinematic_WanderBehavior();
                 }
-                /*
-                FindUnfreezeTarget();
-                if (SecondaryTarget == null)
-                    Kinematic_WanderBehavior();
-                else
-                    Kinematic_ArriveBehavior();
-            */
             }
             else if (SecondaryTarget != null)
             {
@@ -343,7 +321,6 @@ public class BehaviorScript : MonoBehaviour
                 break;
             }
         }
-        //SecondaryTarget = null;
     }
 
     void AlignOrientation(int id)   // if id==1, face towards, if id==2, face away, if id==3, face in forward direction, if id==4, face secondary target
